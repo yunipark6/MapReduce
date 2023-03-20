@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+# mapreduce
+#
+# init
+
+
+# Stop on errors, print commands
+# See https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+set -Eeuo pipefail
+set -x
+
+# Exit 1 if a Manager or Worker is already running. Otherwise, execute the following commands.
+case $1 in
+  "start")
+    mapreduce-manager 6000 5999 &
+    sleep 2
+    mapreduce-worker 6000 5999 6001 &
+    mapreduce-worker 6000 5999 6002 &
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+esac
